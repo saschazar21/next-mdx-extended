@@ -1,0 +1,12 @@
+language: node_js
+
+versions:
+  - lts/dubnium
+
+jobs:
+  include:
+    - stage: test
+      name: 'Linting and testing'
+      scripts:
+        - yarn lint
+        - yarn test
