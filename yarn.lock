@@ -1183,6 +1183,11 @@
     unist-builder "1.0.4"
     unist-util-visit "2.0.1"
 
+"@mdx-js/react@^1.5.3":
+  version "1.5.3"
+  resolved "https://registry.yarnpkg.com/@mdx-js/react/-/react-1.5.3.tgz#e58c458c72b4618f9c8e16d76136e62a6d517515"
+  integrity sha512-5bVLUsZybjmeYL8l4Uh/ysE8vMn0Vb0GKzki/LicaDHJvXr/N4Tjj0gT4tk1OzhcC5nGQAQGIyQMW5pvIjp9XQ==
+
 "@mdx-js/util@^1.5.3":
   version "1.5.3"
   resolved "https://registry.yarnpkg.com/@mdx-js/util/-/util-1.5.3.tgz#49f939313a8561814ef72c231257865aa127ca55"
@@ -1227,10 +1232,10 @@
   dependencies:
     estree-walker "^0.6.1"
 
-"@saschazar/mdx-extended-loader@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@saschazar/mdx-extended-loader/-/mdx-extended-loader-1.0.2.tgz#057260b83727e8bf3f888fc3c14244cb1067dff6"
-  integrity sha512-wTNWqGhXMy18XXBg9XM8WclblZhtLycfD71pirMAYq41OZNvC+PB8CaeTqx8GlxfgFPehNKw3CabfaHmEQwzuA==
+"@saschazar/mdx-extended-loader@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@saschazar/mdx-extended-loader/-/mdx-extended-loader-1.0.3.tgz#9b7afff5c9f58540fd39b7391f5c82f080d0872b"
+  integrity sha512-g4/71GxLQ9EOvD25sij7yU/MNW/6S++hDfKTo0YYXegBdI3X8yIdhjxyFplplhyETrH4VisUyj/dqrKaL5kU1A==
   dependencies:
     "@mdx-js/mdx" "^1.5.2"
     capital-case "^1.0.2"
