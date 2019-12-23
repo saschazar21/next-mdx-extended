@@ -1,6 +1,6 @@
 language: node_js
 
-versions:
+node_js:
   - lts/dubnium
 
 jobs:
@@ -10,3 +10,13 @@ jobs:
       scripts:
         - yarn lint
         - yarn test
+    - stage: build
+      name: 'Building and deploying to NPM'
+      before_deploy:
+        - yarn build
+      deploy:
+        - provider: script
+          edge: true
+          script: npx semantic-release
+          on:
+            branch: master
