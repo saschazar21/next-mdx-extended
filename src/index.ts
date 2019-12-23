@@ -1,8 +1,8 @@
 import { MDXExtendedLoaderOptions } from '@saschazar/mdx-extended-loader';
 import { Configuration } from 'webpack';
 
-import { NextConfig } from 'types/nextConfig';
-import { NextOptions } from 'types/nextOptions';
+import { NextConfig } from 'interfaces/nextConfig';
+import { NextOptions } from 'interfaces/nextOptions';
 
 export default (pluginOptions: MDXExtendedLoaderOptions) => (
   nextConfig: NextConfig
