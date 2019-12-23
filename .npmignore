@@ -1,9 +1,11 @@
 !index.js
 !index.min.js
-!types
+!types/
 
 .babelrc
+.eslintrc
 .travis.yml
+jest.config.js
 rollup.config.js
 tsconfig.json
 .cache/

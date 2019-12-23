@@ -2,7 +2,7 @@ import { Configuration, ICompiler } from 'webpack';
 import WebpackDevMiddleware, { Options } from 'webpack-dev-middleware';
 import { NextHandleFunction } from 'connect';
 
-import { NextOptions } from 'types/nextOptions';
+import { NextOptions } from 'interfaces/nextOptions';
 
 export interface NextConfig {
   env?: string[];
