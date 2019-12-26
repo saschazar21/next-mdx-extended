@@ -3,13 +3,14 @@ import WebpackDevMiddleware, { Options } from 'webpack-dev-middleware';
 import { NextHandleFunction } from 'connect';
 
 import { NextOptions } from 'interfaces/nextOptions';
+import { PathMap, PathMapDirectories } from 'interfaces/pathMap';
 
 export interface NextConfig {
   env?: string[];
   webpack?: (config?: Configuration, options?: NextOptions) => any;
   webpackDevMiddleware?: (
     compiler: ICompiler,
-    options?: Options
+    options?: Options,
   ) => WebpackDevMiddleware.WebpackDevMiddleware & NextHandleFunction;
   distDir?: string;
   assetPrefix?: string;
@@ -33,17 +34,9 @@ export interface NextConfig {
     canonicalBase?: string;
   };
   exportPathMap?: (
-    defaultPathMap: {
-      [key: string]: { page: string; query?: { [key: string]: string } };
-    },
-    directories: {
-      dev: string;
-      dir: string;
-      outDir: string;
-      distDir: string;
-      buildId: string;
-    }
-  ) => { [key: string]: { page: string; query?: { [key: string]: string } } };
+    defaultPathMap: PathMap,
+    directories: PathMapDirectories,
+  ) => PathMap;
   exportTrailingSlash?: boolean;
   experimental?: {
     ampBindInitData?: boolean;
