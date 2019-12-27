@@ -6,9 +6,9 @@ import { terser } from 'rollup-plugin-terser';
 import typescript from 'rollup-plugin-typescript2';
 import typescriptRelativePaths from '@zerollup/ts-transform-paths';
 
-const external = [...builtinModules, '@saschazar/mdx-extended-loader'];
+const external = [...builtinModules, '@saschazar/mdx-extended-loader', '@saschazar/mdx-extended-loader/parser', 'fs-extra', 'gray-matter', 'globby'];
 
-const globals = {};
+const globals = { };
 
 const config = {
   external,
