@@ -1,3 +1,5 @@
+import { paramCase } from 'param-case';
+
 export const YEAR_REGEX = /[Y]{2,4}/;
 export const MONTH_REGEX = /[M]{2}/;
 export const DATE_REGEX = /[D]{2}/;
@@ -49,13 +51,13 @@ export default function parseFormat(
     format,
   );
 
-  // at last, replace the [placeholder] keys with data from the options object
+  // at last, replace the [placeholder] keys with the param-cased data from the options object
   let prop;
   while ((prop = PROPS_REGEX.exec(appliedDate)) !== null) {
     if (prop[1]) {
       appliedDate = appliedDate.replace(
         `[${prop[1]}]`,
-        (options[prop[1]] as string) || '',
+        paramCase((options[prop[1]] as string) || ''),
       );
     }
   }

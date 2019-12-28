@@ -6,9 +6,17 @@ import { terser } from 'rollup-plugin-terser';
 import typescript from 'rollup-plugin-typescript2';
 import typescriptRelativePaths from '@zerollup/ts-transform-paths';
 
-const external = [...builtinModules, '@saschazar/mdx-extended-loader', '@saschazar/mdx-extended-loader/parser', 'fs-extra', 'gray-matter', 'globby'];
+const external = [
+  ...builtinModules,
+  '@saschazar/mdx-extended-loader',
+  '@saschazar/mdx-extended-loader/parser',
+  'fs-extra',
+  'gray-matter',
+  'globby',
+  'param-case',
+];
 
-const globals = { };
+const globals = {};
 
 const config = {
   external,
@@ -17,15 +25,15 @@ const config = {
     nodeResolve(),
     commonjs({
       exclude: /node_modules/,
-      sourceMap: false
+      sourceMap: false,
     }),
     typescript({
       useTsconfigDeclarationDir: true,
       cacheRoot: '.cache',
-      transformers: [service => typescriptRelativePaths(service.getProgram())]
+      transformers: [service => typescriptRelativePaths(service.getProgram())],
     }),
-    babel({ extensions: ['.ts'] })
-  ]
+    babel({ extensions: ['.ts'] }),
+  ],
 };
 
 export default [
@@ -35,9 +43,9 @@ export default [
       {
         file: 'index.js',
         format: 'cjs',
-        globals
-      }
-    ]
+        globals,
+      },
+    ],
   },
   {
     ...config,
@@ -46,8 +54,8 @@ export default [
       {
         file: 'index.min.js',
         format: 'cjs',
-        globals
-      }
-    ]
-  }
+        globals,
+      },
+    ],
+  },
 ];

@@ -62,6 +62,7 @@
     "@mdx-js/react": "^1.5.3",
     "@saschazar/mdx-extended-loader": "^1.0.3",
     "fs-extra": "^8.1.0",
-    "globby": "^10.0.1"
+    "globby": "^10.0.1",
+    "param-case": "^3.0.3"
   }
 }

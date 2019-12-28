@@ -12,5 +12,6 @@ export interface PathMapDirectories {
 
 export interface PathMapOptions {
   blogDir?: string; // the directory where to look for Markdown/MDX files, relative to 'pages', default 'blog'
+  exportData?: boolean; // whether to export the posts collection to a JSON (Metadata only)
   format?: string; // the format to rewrite the blog posts, default /blog/YYYY/[title]
 }
