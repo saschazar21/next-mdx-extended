@@ -1,4 +1,4 @@
-import { basename, join, resolve } from 'path';
+import { basename, extname, join, resolve } from 'path';
 import { readFile } from 'fs-extra';
 import matter from 'gray-matter';
 import parse from '@saschazar/mdx-extended-loader/parser';
@@ -75,8 +75,10 @@ export default async function exportPathMap(
       }
 
       // add the rewritten path to the PathMap
-      return Object.assign({}, processedPaths, {
-        [join('/', blogDir, url)]: join('/', blogDir, post),
+      return Object.assign({}, await processedPaths, {
+        [join('/', url)]: {
+          page: join('/', blogDir, basename(post, extname(post))),
+        },
       });
     },
     Promise.resolve({} as PathMap),
