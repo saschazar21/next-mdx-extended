@@ -30,18 +30,27 @@ describe('exportPathMap', () => {
 
   beforeEach(() => {
     jest.resetModules();
-  });
-
-  it('handles paths using defaults', async () => {
     globby.mockImplementation(() =>
       Promise.resolve(['2019-12-28_a-post.mdx', '2019-12-29_a-new-post.mdx']),
     );
     fsExtra.readFile.mockImplementation(url =>
       Promise.resolve(fs.readFileSync(url)),
     );
+  });
+
+  it('handles paths using defaults', async () => {
     const paths = await exportPathMap(defaultPathMap, directories);
     expect(paths).toHaveProperty('/blog/2019/a-post', {
       page: '/blog/2019-12-28_a-post',
+    });
+  });
+
+  it('handles paths using custom settings', async () => {
+    const paths = await exportPathMap(defaultPathMap, directories, {
+      format: '/posts/[author]/YYYY/MM/[title]',
+    });
+    expect(paths).toHaveProperty('/posts/sascha-zarhuber/2019/12/a-new-post', {
+      page: '/blog/2019-12-29_a-new-post',
     });
   });
 });
