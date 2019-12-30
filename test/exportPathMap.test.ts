@@ -16,7 +16,7 @@ const directories = { dev: true, dir: '/' };
 
 jest.setTimeout(10000);
 
-describe('exportPathMap', () => {
+describe('ExportPathMap', () => {
   beforeAll(() => {
     const files = {
       './blog/2019-12-28_a-post.mdx':
@@ -26,13 +26,9 @@ describe('exportPathMap', () => {
     };
 
     vol.fromJSON(files, '/pages');
-  });
 
-  beforeEach(() => {
-    jest.resetModules();
-    globby.mockImplementation(() =>
-      Promise.resolve(['2019-12-28_a-post.mdx', '2019-12-29_a-new-post.mdx']),
-    );
+    globby.mockImplementation(() => Promise.resolve(['2019-12-28_a-post.mdx', '2019-12-29_a-new-post.mdx']));
+
     fsExtra.readFile.mockImplementation(url =>
       Promise.resolve(fs.readFileSync(url)),
     );
@@ -52,5 +48,29 @@ describe('exportPathMap', () => {
     expect(paths).toHaveProperty('/posts/sascha-zarhuber/2019/12/a-new-post', {
       page: '/blog/2019-12-29_a-new-post',
     });
+  });
+});
+
+describe('ExportPathMap fails', () => {
+  beforeAll(() => {
+    const files = {
+      './blog/19-12-28_a-post.mdx':
+        '---\nlayout: custom\nauthor: Sascha Zarhuber\nkeywords:\n  blog\n  post\n---\n\n A blog post',
+      './blog/19-12-29_a-new-post.mdx':
+        '---\nlayout: custom\nauthor: Sascha Zarhuber\nkeywords:\n  blog\n  post\n---\n\n A new blog post',
+    };
+    
+    vol.fromJSON(files);
+
+    globby.mockImplementation(() => Promise.resolve(['19-12-28_a-post.mdx', '19-12-29_a-new-post.mdx']));
+    fsExtra.readFile.mockImplementation(url => Promise.resolve(url));
+  });
+  
+  it('when parsing format with invalid data', async () => {
+    console.error = jest.fn();
+    const paths = await exportPathMap(defaultPathMap, directories);
+    
+    expect(paths).toHaveProperty('/blog/19-12-29_a-new-post', { page: '/blog/19-12-29_a-new-post' });
+    expect(console.error).toHaveBeenCalled();
   });
 });

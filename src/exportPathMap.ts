@@ -57,7 +57,7 @@ export default async function exportPathMap(
       processedPaths: Promise<PathMap>,
       post: string,
     ): Promise<PathMap> => {
-      let url = join('/', blogDir, post);
+      let url = join('/', blogDir, basename(post, extname(post)));
       try {
         const parsedFilename = parseDateAndTitle(basename(post)); // attempt to parse date and title from the filename
         const postContents = await readFile(
