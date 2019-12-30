@@ -29,9 +29,15 @@ describe('ExportPathMap', () => {
 
     globby.mockImplementation(() => Promise.resolve(['2019-12-28_a-post.mdx', '2019-12-29_a-new-post.mdx']));
 
+    fsExtra.ensureDir.mockImplementation(path => Promise.resolve(fs.mkdirpSync(path)));
     fsExtra.readFile.mockImplementation(url =>
       Promise.resolve(fs.readFileSync(url)),
     );
+    fsExtra.writeJson.mockImplementation((path, data, options) => {
+      const { spaces } = options;
+      const stringified = JSON.stringify(data, null, spaces);
+      return Promise.resolve(fs.writeFileSync(path, stringified));
+    });
   });
 
   it('handles paths using defaults', async () => {
@@ -48,6 +54,18 @@ describe('ExportPathMap', () => {
     expect(paths).toHaveProperty('/posts/sascha-zarhuber/2019/12/a-new-post', {
       page: '/blog/2019-12-29_a-new-post',
     });
+  });
+  
+  it('stores posts.json to /public folder', async () => {
+    await exportPathMap(defaultPathMap, directories, { exportData: true });
+    
+    const posts = fs.readFileSync('/public/posts.json', 'utf-8') as string;
+    const parsed = JSON.parse(posts);
+
+    expect((Array.isArray(parsed))).toBeTruthy();
+    expect(parsed).toHaveLength(2);
+    expect(parsed[0]).toHaveProperty('author', 'Sascha Zarhuber');
+    expect(parsed[1]).toHaveProperty('__filepath', '/blog/2019/a-new-post');
   });
 });
 

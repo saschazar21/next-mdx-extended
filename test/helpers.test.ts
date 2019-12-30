@@ -70,15 +70,19 @@ describe('WriteData', () => {
   });
   
   it('stores PathMap in /public folder', async () => {
-    const pathMap = {
-      '/': { page: '/' },
-      '/blog/2019/a-post': { page: '/blog/2019-12-28_a-post' },
-      '/blog/2019/a-new-post': { page: '/blog/2019-12-29_a-new-post' },
-    };
-    await writeData(pathMap, { dir: '/' });
+    const postsMeta = [{
+      __filepath: '/blog/2019/a-post',
+      title: 'A Post',
+      author: 'John Doe',
+    }, {
+      __filepath: '/blog/2019/a-new-post',
+      title: 'A New Post',
+      author: 'John Doe',
+    }];
+    await writeData(postsMeta, { dir: '/' });
     
     const result = fs.readFileSync('/public/posts.json', 'utf-8');
-    const stringified = JSON.stringify(pathMap, null, 4);
+    const stringified = JSON.stringify(postsMeta, null, 4);
     
     expect(result).toEqual(stringified);
   });

@@ -11,7 +11,7 @@ import { PathMapDirectories } from 'interfaces/pathMap';
  */
 export default function writeData(
   /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-  postsMeta: { [key: string]: any },
+  postsMeta: { [key: string]: any }[],
   directories: PathMapDirectories,
 ): Promise<void> {
   const { dir } = directories;
