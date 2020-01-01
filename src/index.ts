@@ -10,7 +10,12 @@ export default (pluginOptions: WithMDXExtendedOptions) => (
   nextConfig: NextConfig,
 ) => {
   const test = /\.mdx?$/;
-  const { blogDir, exportData, format, ...mdxLoaderOptions } = pluginOptions;
+  const { blogDir, exportData, format, ...loaderOptions } = pluginOptions;
+  const mdxLoaderOptions = Object.assign(
+    {},
+    { extensions: nextConfig.pageExtensions, layoutsDir: 'layouts' },
+    loaderOptions,
+  );
 
   return Object.assign({}, nextConfig, {
     exportPathMap: async (
