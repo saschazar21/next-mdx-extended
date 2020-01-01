@@ -16,17 +16,17 @@ const mockedUrl = resolve('pages', 'blog');
 
 describe('Glob', () => {
   beforeAll(() => {
-    globby.mockImplementation(url =>
+    globby.mockImplementation((url) =>
       Promise.resolve(url === mockedUrl ? mockedFiles : []),
     );
-    
+
     const files = {
       './blog/2019-12-28_a-post.mdx':
         '---\nlayout: custom\nauthor: Sascha Zarhuber\nkeywords:\n  blog\n  post\n---\n\n A blog post',
       './blog/2019-12-29_a-new-post.mdx':
         '---\nlayout: custom\nauthor: Sascha Zarhuber\nkeywords:\n  blog\n  post\n---\n\n A new blog post',
     };
-    
+
     vol.fromJSON(files, '/pages');
   });
 
@@ -45,15 +45,27 @@ describe('Glob', () => {
 describe('ParseFormat', () => {
   it('successfully parses placeholders', () => {
     const format = '/[author]/YYYY/MM/[title]';
-    const options = { date: '2019-12-30', title: 'Test Title', author: 'John Doe' };
+    const options = {
+      date: '2019-12-30',
+      title: 'Test Title',
+      author: 'John Doe',
+    };
     const outcome = '/john-doe/2019/12/test-title';
-    
+
     expect(parseFormat(format, options)).toEqual(outcome);
   });
-  
+
+  it('successfully prepends zeros to single digits', () => {
+    const format = '/YYYY/MM/[title]';
+    const options = { date: '2020-1-1', title: 'Test' };
+    const outcome = '/2020/01/test';
+
+    expect(parseFormat(format, options)).toEqual(outcome);
+  });
+
   it('throws Error when parsing invalid date format', () => {
     const options = { date: '20-12-29', title: 'a-title' };
-    
+
     expect(() => parseFormat('/YYYY/[title]', options)).toThrowError();
   });
 });
@@ -65,25 +77,30 @@ describe('WriteData', () => {
       const stringified = JSON.stringify(data, null, space);
       return Promise.resolve(fs.writeFileSync(path, stringified));
     });
-    
-    fsExtra.ensureDir.mockImplementation(path => Promise.resolve(fs.mkdirpSync(path)));
+
+    fsExtra.ensureDir.mockImplementation((path) =>
+      Promise.resolve(fs.mkdirpSync(path)),
+    );
   });
-  
+
   it('stores PathMap in /public folder', async () => {
-    const postsMeta = [{
-      __filepath: '/blog/2019/a-post',
-      title: 'A Post',
-      author: 'John Doe',
-    }, {
-      __filepath: '/blog/2019/a-new-post',
-      title: 'A New Post',
-      author: 'John Doe',
-    }];
+    const postsMeta = [
+      {
+        __filepath: '/blog/2019/a-post',
+        title: 'A Post',
+        author: 'John Doe',
+      },
+      {
+        __filepath: '/blog/2019/a-new-post',
+        title: 'A New Post',
+        author: 'John Doe',
+      },
+    ];
     await writeData(postsMeta, { dir: '/' });
-    
+
     const result = fs.readFileSync('/public/posts.json', 'utf-8');
     const stringified = JSON.stringify(postsMeta, null, 4);
-    
+
     expect(result).toEqual(stringified);
   });
 });

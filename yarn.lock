@@ -1232,10 +1232,10 @@
   dependencies:
     estree-walker "^0.6.1"
 
-"@saschazar/mdx-extended-loader@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@saschazar/mdx-extended-loader/-/mdx-extended-loader-1.0.3.tgz#9b7afff5c9f58540fd39b7391f5c82f080d0872b"
-  integrity sha512-g4/71GxLQ9EOvD25sij7yU/MNW/6S++hDfKTo0YYXegBdI3X8yIdhjxyFplplhyETrH4VisUyj/dqrKaL5kU1A==
+"@saschazar/mdx-extended-loader@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@saschazar/mdx-extended-loader/-/mdx-extended-loader-1.0.4.tgz#512ea9ecc79bf52c6f426590595a6628679c72ab"
+  integrity sha512-xPTMmSgwWNMZBQnFHmxNKOr74nim0O7kOUzMUi/6VWPTRIOklBaUFqDSmTxiKr6BLX31WO9vX6YHHLG2S4+kwQ==
   dependencies:
     "@mdx-js/mdx" "^1.5.2"
     capital-case "^1.0.2"
