@@ -84,6 +84,8 @@ _Work in progress_
 
 Without [@next/mdx](https://github.com/zeit/next.js/tree/canary/packages/next-mdx) and [next-mdx-enhanced](https://github.com/hashicorp/next-mdx-enhanced), none of this would have happened, or at least in a very different way.
 
+Also, I got inspired a lot by @mxstbr's [website respository](https://github.com/mxstbr/mxstbr.com) concerning the `exportPathMap` functionality.
+
 ## License
 
 Licensed under the MIT license.
