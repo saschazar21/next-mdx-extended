@@ -65,7 +65,7 @@ Create a `next.config.js` file in your project root:
 const withMDXExtended = require('@saschazar/next-mdx-extended')();
 
 module.exports = withMDXExtended({
-  pageExtensions: ['mdx', 'md'],
+  pageExtensions: ['mdx', 'md']
 });
 ```
 
@@ -78,11 +78,56 @@ For customization or enhancement of the above parameters, check the [options](#o
 
 ## Options
 
-_Work in progress_
+The following options are all optional, and most of them are having default values set:
+
+### `exportData`
+
+> `boolean` | optional | example: `true`
+
+Whether to export a `posts.json` file containing metadata about the blog posts to `./public` (e.g. for fetching data about blog posts via the `async getInitialProps()` hook). Unset by default (and therefore not exported).
+
+⚠️ **TL/DR**: Whenever activated, it creates a `posts.json` file in your `./public` folder, which might cause unwanted side-effects in your git setup!
+
+### `blogDir`
+
+> `string` | optional | default: `blog`
+
+The directory to look for blog posts for rewriting the paths for. Only filenames in this directory (incl. sub-directories) are getting parsed, whereas other `.md`/`.mdx` files are getting transformed into JavaScript as well, but will be served under their initial filename as URL.
+
+### `format`
+
+> `string` | optional | default: `/blog/YYYY/[title]`
+
+The definition after how to rewrite the blog post URLs. Possible values are:
+
+- `YYYY`: The full year, e.g. `2020` (parsed from file name).
+- `MM`: The month, e.g. `01` (parsed from file name).
+- `DD`: The date, e.g. `02` (parsed from file name).
+- `[title]`: Any string wrapped in square brackets will be replaced by its value from the frontmatter metadata. If no such key is found in the metadata, the placeholder gets deleted from the final URL path. `[title]` refers to the second half of the filename primarily, after the date was parsed, but might as well be replaced by setting the according value in the frontmatter.
+
+**Example**: `/[author]/YYYY/MM/[title]` expects an `author` key in the frontmatter metadata. If no `title` key is present in the metadata, the parsed title from the filename will be used.
+
+### `extensions`
+
+> `array` | optional | default: `pageExtensions` from the [Next.js configuration](https://nextjs.org/docs/api-reference/next.config.js/custom-page-extensions)
+
+The expected file suffixes of the layout files in the [`layoutsDir`](#layoutsdir) directory.
+
+### `layoutsDir``
+
+> `string` | optional | default: `layouts`
+
+The name of the directory (relative to the project root) for where to find the React components, which should later be wrapped around the `.md`/`.mdx` files.
+
+### Other options
+
+As this project acts as a superior Next.js plugin wrapper for both [@mdx-js/loader](https://github.com/mdx-js/mdx) and [@saschazar/mdx-extended-loader](https://github.com/saschazar21/mdx-extended-loader), the options object also takes specific options for those projects.
+
+Please see both repository pages for additional options documentations, (e.g. `mdPlugins`, `hastPlugins`).
 
 ## Credits
 
-Without [@next/mdx](https://github.com/zeit/next.js/tree/canary/packages/next-mdx) and [next-mdx-enhanced](https://github.com/hashicorp/next-mdx-enhanced), none of this would have happened, or at least in a very different way.
+Without [MDX](https://mdxjs.com/), [@next/mdx](https://github.com/zeit/next.js/tree/canary/packages/next-mdx) and [next-mdx-enhanced](https://github.com/hashicorp/next-mdx-enhanced), none of this would have happened, or at least in a very different way.
 
 Also, I got inspired a lot by @mxstbr's [website respository](https://github.com/mxstbr/mxstbr.com) concerning the `exportPathMap` functionality.
 
