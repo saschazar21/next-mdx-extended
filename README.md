@@ -82,7 +82,7 @@ The following options are all optional, and most of them are having default valu
 
 ### `exportData`
 
-> `boolean` | optional | example: `true`
+> `boolean` | optional | default: `false`
 
 Whether to export a `posts.json` file containing metadata about the blog posts to `./public` (e.g. for fetching data about blog posts via the `async getInitialProps()` hook). Unset by default (and therefore not exported).
 
