@@ -113,7 +113,7 @@ The definition after how to rewrite the blog post URLs. Possible values are:
 
 The expected file suffixes of the layout files in the [`layoutsDir`](#layoutsdir) directory.
 
-### `layoutsDir``
+### `layoutsDir`
 
 > `string` | optional | default: `layouts`
 
