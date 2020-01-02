@@ -7,25 +7,25 @@ import { WithMDXExtendedOptions } from 'interfaces/withMDXExtendedOptions';
 import exportPathMap from 'exportPathMap';
 
 export default (pluginOptions: WithMDXExtendedOptions) => (
-  nextConfig: NextConfig,
+  nextConfig: NextConfig
 ) => {
   const test = /\.mdx?$/;
-  const { blogDir, exportData, format, ...loaderOptions } = pluginOptions;
+  const { blogDir, exportData, format, ...loaderOptions } = pluginOptions || {};
   const mdxLoaderOptions = Object.assign(
     {},
     { extensions: nextConfig.pageExtensions, layoutsDir: 'layouts' },
-    loaderOptions,
+    loaderOptions
   );
 
   return Object.assign({}, nextConfig, {
     exportPathMap: async (
       defaultPathMap: PathMap,
-      directories: PathMapDirectories,
+      directories: PathMapDirectories
     ) =>
       exportPathMap(defaultPathMap, directories, {
         blogDir,
         exportData,
-        format,
+        format
       }),
     webpack(config: Configuration, options: NextOptions) {
       const { module: { rules = [] } = {} } = config || {};
@@ -35,9 +35,9 @@ export default (pluginOptions: WithMDXExtendedOptions) => (
           options.defaultLoaders.babel,
           {
             loader: '@saschazar/mdx-extended-loader',
-            options: mdxLoaderOptions,
-          },
-        ],
+            options: mdxLoaderOptions
+          }
+        ]
       });
 
       if (typeof nextConfig.webpack === 'function') {
@@ -45,6 +45,6 @@ export default (pluginOptions: WithMDXExtendedOptions) => (
       }
 
       return config;
-    },
+    }
   });
 };
