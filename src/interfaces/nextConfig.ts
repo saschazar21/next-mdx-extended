@@ -4,13 +4,14 @@ import { NextHandleFunction } from 'connect';
 
 import { NextOptions } from 'interfaces/nextOptions';
 import { PathMap, PathMapDirectories } from 'interfaces/pathMap';
+import { RewriteRule } from 'interfaces/rewriteRule';
 
 export interface NextConfig {
   env?: string[];
   webpack?: (config?: Configuration, options?: NextOptions) => any;
   webpackDevMiddleware?: (
     compiler: ICompiler,
-    options?: Options,
+    options?: Options
   ) => WebpackDevMiddleware.WebpackDevMiddleware & NextHandleFunction;
   distDir?: string;
   assetPrefix?: string;
@@ -35,7 +36,7 @@ export interface NextConfig {
   };
   exportPathMap?: (
     defaultPathMap: PathMap,
-    directories: PathMapDirectories,
+    directories: PathMapDirectories
   ) => PathMap;
   exportTrailingSlash?: boolean;
   experimental?: {
@@ -51,6 +52,7 @@ export interface NextConfig {
     sprFlushToDisk?: boolean;
     deferScripts?: boolean;
     reactMode?: string;
+    rewrites: () => Promise<RewriteRule[]>;
     workerThreads?: boolean;
   };
   future?: {
