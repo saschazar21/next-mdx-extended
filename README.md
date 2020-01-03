@@ -46,6 +46,8 @@ Without any custom [options](#options), both `.mdx` files would be wrapped in `l
       ├ first-blog-post.html
 ```
 
+⚠️ **Caution**: This plugin only has an effect, when the project is exported via `next export`. More information in the [Next.js docs](https://nextjs.org/docs/api-reference/next.config.js/exportPathMap).
+
 ## Installation
 
 `yarn add @saschazar/next-mdx-extended`
