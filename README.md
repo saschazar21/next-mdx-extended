@@ -17,8 +17,8 @@ The underlying standalone [Webpack](https://webpack.js.org/) loader may be found
 | `.md` files                 | ✔️                             | ✔️                                                                           |
 | `.mdx` files                | ✔️                             | ✔️                                                                           |
 | custom layouts              | ✔️                             | ✖️                                                                           |
-| URL rewriting               | ✔️                             | ✖️                                                                           |
-| extracting metadata to JSON | ✔️                             | ✖️                                                                           |
+| URL rewriting               | ✔️ (only using `next export`)  | ✖️                                                                           |
+| extracting metadata to JSON | ✔️ (only using `next export`)  | ✖️                                                                           |
 
 Given the following project tree:
 
