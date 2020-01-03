@@ -10,6 +10,7 @@ jobs:
       scripts:
         - yarn lint
         - yarn test
+        - bash <(curl -s https://codecov.io/bash) -Z
     - stage: build
       name: 'Building and deploying to NPM'
       before_deploy:
