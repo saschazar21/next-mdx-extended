@@ -59,6 +59,7 @@ export default (pluginOptions: WithMDXExtendedOptions) => (
       }
     },
     enableRewrites && {
+      target: nextConfig.target || 'server',
       experimental: {
         modern: true,
         rewrites: async (): Promise<RewriteRule[]> => {
