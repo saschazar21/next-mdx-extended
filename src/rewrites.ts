@@ -28,8 +28,10 @@ export default async function rewrites(
     buildId: BUILD_ID_PLACEHOLDER,
   };
 
+  // get the generated path map
   const pathMap = await exportPathMap(defaultPathMap, directories, options);
 
+  // map the path map to a rewrite rule
   const rewriteRules: RewriteRule[] = Object.keys(pathMap).map(
     (source: string): RewriteRule => {
       const { page: destination } = pathMap[source];
