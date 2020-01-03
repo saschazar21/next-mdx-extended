@@ -43,6 +43,11 @@ describe('next-mdx-extended', () => {
     fsExtra.readFile.mockImplementation((url) =>
       Promise.resolve(fs.readFileSync(url)),
     );
+    fsExtra.writeJson.mockImplementation((path, data, options) => {
+      const { spaces } = options;
+      const stringified = JSON.stringify(data, null, spaces);
+      return Promise.resolve(fs.writeFileSync(path, stringified));
+    });
 
     process.cwd = () => '/';
   });
@@ -67,5 +72,49 @@ describe('next-mdx-extended', () => {
 
     expect(rewrites).toHaveLength(2);
     expect(rewrites[0]).toHaveProperty('source', '/blog/2019/a-post');
+  });
+
+  it('exports post meta from rewrites by default', async () => {
+    const postsMetaUrl = '/public/posts.json';
+    const defaultPathMap = {};
+    const directories = { dev: true, dir: '/' };
+    const withMDXExtended = mdxExtended({ ...options, exportData: true });
+    const config = withMDXExtended(nextConfig);
+
+    await config.exportPathMap(defaultPathMap, directories);
+
+    expect(() => fs.readFileSync(postsMetaUrl, 'utf-8')).toThrowError(
+      "ENOENT: no such file or directory, open '/public/posts.json'",
+    );
+
+    await config.experimental.rewrites();
+
+    const postsMeta = JSON.parse(
+      fs.readFileSync(postsMetaUrl, 'utf-8') as string,
+    );
+
+    expect(postsMeta).toHaveLength(2);
+    expect(postsMeta[0]).toHaveProperty('author', 'Sascha Zarhuber');
+  });
+
+  it('exports posts meta from exportPathMap, when rewrites disabled', async () => {
+    const postsMetaUrl = '/public/posts.json';
+    const defaultPathMap = {};
+    const directories = { dev: true, dir: '/' };
+    const withMDXExtended = mdxExtended({
+      ...options,
+      enableRewrites: false,
+      exportData: true,
+    });
+    const config = withMDXExtended(nextConfig);
+
+    await config.exportPathMap(defaultPathMap, directories);
+
+    const postsMeta = JSON.parse(
+      fs.readFileSync(postsMetaUrl, 'utf-8') as string,
+    );
+
+    expect(postsMeta).toHaveLength(2);
+    expect(postsMeta[0]).toHaveProperty('author', 'Sascha Zarhuber');
   });
 });
