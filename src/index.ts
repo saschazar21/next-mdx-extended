@@ -9,7 +9,7 @@ import exportPathMap from 'exportPathMap';
 import rewrites from 'rewrites';
 
 export default (pluginOptions: WithMDXExtendedOptions) => (
-  nextConfig: NextConfig = {}
+  nextConfig: NextConfig = {},
 ): NextConfig => {
   const test = /\.mdx?$/;
   const {
@@ -22,7 +22,7 @@ export default (pluginOptions: WithMDXExtendedOptions) => (
   const mdxLoaderOptions = Object.assign(
     {},
     { extensions: nextConfig.pageExtensions, layoutsDir: 'layouts' },
-    loaderOptions
+    loaderOptions,
   );
 
   return Object.assign(
@@ -31,12 +31,12 @@ export default (pluginOptions: WithMDXExtendedOptions) => (
     {
       exportPathMap: async (
         defaultPathMap: PathMap,
-        directories: PathMapDirectories
+        directories: PathMapDirectories,
       ) =>
         exportPathMap(defaultPathMap, directories, {
           blogDir,
           exportData,
-          format
+          format,
         }),
       webpack(config: Configuration, options: NextOptions) {
         const { module: { rules = [] } = {} } = config || {};
@@ -46,9 +46,9 @@ export default (pluginOptions: WithMDXExtendedOptions) => (
             options.defaultLoaders.babel,
             {
               loader: '@saschazar/mdx-extended-loader',
-              options: mdxLoaderOptions
-            }
-          ]
+              options: mdxLoaderOptions,
+            },
+          ],
         });
 
         if (typeof nextConfig.webpack === 'function') {
@@ -56,7 +56,7 @@ export default (pluginOptions: WithMDXExtendedOptions) => (
         }
 
         return config;
-      }
+      },
     },
     enableRewrites && {
       target: nextConfig.target || 'server',
@@ -66,8 +66,8 @@ export default (pluginOptions: WithMDXExtendedOptions) => (
           const {
             experimental: {
               rewrites: customRewrites = (): Promise<RewriteRule[]> =>
-                Promise.resolve([])
-            } = {}
+                Promise.resolve([]),
+            } = {},
           } = nextConfig;
           const hasRewrites =
             customRewrites && typeof customRewrites === 'function';
@@ -75,14 +75,14 @@ export default (pluginOptions: WithMDXExtendedOptions) => (
           try {
             const parsedRewrites = await rewrites({ blogDir, format });
             return parsedRewrites.concat(
-              hasRewrites ? await customRewrites() : []
+              hasRewrites ? await customRewrites() : [],
             );
           } catch (e) {
             console.error(e.message || e);
             return [];
           }
-        }
-      }
-    }
+        },
+      },
+    },
   );
 };

@@ -67,9 +67,7 @@ export default async function exportPathMap(
         const { data } = matter(postContents); // parse the frontmatter
         const meta = Object.assign({}, parsedFilename, data);
         url = parseFormat(format, meta); // replace the placeholders in the format with the actual values
-        postsMeta.push(
-          Object.assign({}, meta, { url: join('/', url) }),
-        );
+        postsMeta.push(Object.assign({}, meta, { url: join('/', url) }));
       } catch (e) {
         console.error(e);
       }
