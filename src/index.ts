@@ -38,7 +38,6 @@ export default (pluginOptions: WithMDXExtendedOptions) => (
           exportData,
           format
         }),
-      target: nextConfig.target || 'serverless',
       webpack(config: Configuration, options: NextOptions) {
         const { module: { rules = [] } = {} } = config || {};
         rules.push({
