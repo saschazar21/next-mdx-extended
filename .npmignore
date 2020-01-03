@@ -4,6 +4,7 @@
 
 .babelrc
 .eslintrc
+.releaserc
 .travis.yml
 jest.config.js
 rollup.config.js
