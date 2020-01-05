@@ -1,3 +1,18 @@
+# [1.1.0](https://github.com/saschazar21/next-mdx-extended/compare/v1.0.0...v1.1.0) (2020-01-05)
+
+
+### Bug Fixes
+
+* **exportPathMap:** improved error output ([705384f](https://github.com/saschazar21/next-mdx-extended/commit/705384f8aaa920836d9138089391f7bd47efc37d))
+* **index:** removed target default ([ee15908](https://github.com/saschazar21/next-mdx-extended/commit/ee15908e488e10bffa97c6687d4c0fc84e339d44))
+* **index:** set default target to server again ([8d5014d](https://github.com/saschazar21/next-mdx-extended/commit/8d5014d52bb922d99290611279147c6ebf3e13e7))
+
+
+### Features
+
+* **rewrites:** added rewrites to next config ([10162ee](https://github.com/saschazar21/next-mdx-extended/commit/10162ee68fd259b927ca8db56784c972b6e1ba7f))
+* **rewrites:** moved exportData from exportPathMap to rewrites ([587a75b](https://github.com/saschazar21/next-mdx-extended/commit/587a75bc320fb8f2daad558428841a0cff3f6655))
+
 # 1.0.0 (2020-01-03)
 
 
