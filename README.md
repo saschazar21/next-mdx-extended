@@ -4,7 +4,7 @@
 
 > Easily wrap MDX pages in React components for Next.js
 
-A [Next.js](https://nextjs.org) plugin for wrapping **Markdown/MDX** files in **React** components, with URL rewriting options.
+A [Next.js](https://nextjs.org) plugin for wrapping **Markdown/MDX** files in **React** components, with URL rewriting options. Now supporting _serverless_ [Next.js rewrites](https://github.com/zeit/next.js/issues/9081#issuecomment-556010060).
 
 ## Features
 
@@ -17,8 +17,8 @@ The underlying standalone [Webpack](https://webpack.js.org/) loader may be found
 | `.md` files                 | ✔️                             | ✔️                                                                           |
 | `.mdx` files                | ✔️                             | ✔️                                                                           |
 | custom layouts              | ✔️                             | ✖️                                                                           |
-| URL rewriting               | ✔️ (only using `next export`)  | ✖️                                                                           |
-| extracting metadata to JSON | ✔️ (only using `next export`)  | ✖️                                                                           |
+| URL rewriting               | ✔️                             | ✖️                                                                           |
+| extracting metadata to JSON | ✔️                             | ✖️                                                                           |
 
 Given the following project tree:
 
@@ -46,8 +46,6 @@ Without any custom [options](#options), both `.mdx` files would be wrapped in `l
       ├ first-blog-post.html
 ```
 
-⚠️ **CAUTION**: The URL rewriting functionality of this plugin only has an effect, when the project is exported via `next export`. More information in the [Next.js docs](https://nextjs.org/docs/api-reference/next.config.js/exportPathMap). Same goes for the [`exportData`](#exportdata) option.
-
 ## Installation
 
 `yarn add @saschazar/next-mdx-extended`
@@ -67,7 +65,7 @@ Create a `next.config.js` file in your project root:
 const withMDXExtended = require('@saschazar/next-mdx-extended')();
 
 module.exports = withMDXExtended({
-  pageExtensions: ['mdx', 'md']
+  pageExtensions: ['mdx', 'md'],
 });
 ```
 
