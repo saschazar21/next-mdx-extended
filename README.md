@@ -65,7 +65,7 @@ Create a `next.config.js` file in your project root:
 const withMDXExtended = require('@saschazar/next-mdx-extended')();
 
 module.exports = withMDXExtended({
-  pageExtensions: ['mdx', 'md'],
+  pageExtensions: ['jsx', 'js', 'mdx', 'md']
 });
 ```
 
