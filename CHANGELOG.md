@@ -1,3 +1,16 @@
+# [2.0.0](https://github.com/saschazar21/next-mdx-extended/compare/v1.1.0...v2.0.0) (2020-01-17)
+
+
+### Features
+
+* **feed:** refactored postsMeta to export JSON feed data, replaced 'exportData' with 'feed' as config key. ([21fd2bb](https://github.com/saschazar21/next-mdx-extended/commit/21fd2bbbb96dc905676cc1f2d643a0a33354e188))
+
+
+### BREAKING CHANGES
+
+* **feed:** The 'feed' config option has replaced the 'exportData' config option.
+The option exports a '/public/feed.json' containing a JSON Feed instead of a '/public/posts.json' file.
+
 # [1.1.0](https://github.com/saschazar21/next-mdx-extended/compare/v1.0.0...v1.1.0) (2020-01-05)
 
 
