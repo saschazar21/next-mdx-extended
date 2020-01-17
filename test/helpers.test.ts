@@ -6,8 +6,10 @@ const fsExtra = require('fs-extra');
 
 import { resolve } from 'path';
 import { fs, vol } from 'memfs';
+import matter from 'gray-matter';
 
 import glob from '../src/helpers/glob';
+import mapFeedItemData from '../src/helpers/mapFeedItemData';
 import parseFormat from '../src/helpers/parseFormat';
 import writeData from '../src/helpers/writeData';
 
@@ -16,15 +18,15 @@ const mockedUrl = resolve('pages', 'blog');
 
 describe('Glob', () => {
   beforeAll(() => {
-    globby.mockImplementation((url) =>
-      Promise.resolve(url === mockedUrl ? mockedFiles : []),
+    globby.mockImplementation(url =>
+      Promise.resolve(url === mockedUrl ? mockedFiles : [])
     );
 
     const files = {
       './blog/2019-12-28_a-post.mdx':
-        '---\nlayout: custom\nauthor: Sascha Zarhuber\nkeywords:\n  blog\n  post\n---\n\n A blog post',
+        '---\nlayout: custom\nauthor: Sascha Zarhuber\ntags:\n  blog\n  post\n---\n\n A blog post',
       './blog/2019-12-29_a-new-post.mdx':
-        '---\nlayout: custom\nauthor: Sascha Zarhuber\nkeywords:\n  blog\n  post\n---\n\n A new blog post',
+        '---\nlayout: custom\nauthor: Sascha Zarhuber\ntags:\n  blog\n  post\n---\n\n A new blog post'
     };
 
     vol.fromJSON(files, '/pages');
@@ -42,13 +44,37 @@ describe('Glob', () => {
   });
 });
 
+describe('MapFeedItemData', () => {
+  beforeAll(() => {
+    console.error = jest.fn();
+  });
+
+  it('should map data to valid JSON feed', async () => {
+    const post = fs.readFileSync(
+      '/pages/blog/2019-12-29_a-new-post.mdx',
+      'utf-8'
+    );
+    const { data, content } = matter(post);
+
+    const item = await mapFeedItemData(
+      Object.assign({}, data, { content }, { url: '/blog/2019/a-new-post' })
+    );
+    expect(item).toHaveProperty('author', 'Sascha Zarhuber');
+    expect(item).toHaveProperty('content_text', 'A new blog post');
+  });
+
+  it('should fail when not content was given', async () => {
+    expect(mapFeedItemData({})).rejects.toThrowError('No content to parse!');
+  });
+});
+
 describe('ParseFormat', () => {
   it('successfully parses placeholders', () => {
     const format = '/[author]/YYYY/MM/[title]';
     const options = {
       date: '2019-12-30',
       title: 'Test Title',
-      author: 'John Doe',
+      author: 'John Doe'
     };
     const outcome = '/john-doe/2019/12/test-title';
 
@@ -78,8 +104,8 @@ describe('WriteData', () => {
       return Promise.resolve(fs.writeFileSync(path, stringified));
     });
 
-    fsExtra.ensureDir.mockImplementation((path) =>
-      Promise.resolve(fs.mkdirpSync(path)),
+    fsExtra.ensureDir.mockImplementation(path =>
+      Promise.resolve(fs.mkdirpSync(path))
     );
   });
 
@@ -88,17 +114,17 @@ describe('WriteData', () => {
       {
         __filepath: '/blog/2019/a-post',
         title: 'A Post',
-        author: 'John Doe',
+        author: 'John Doe'
       },
       {
         __filepath: '/blog/2019/a-new-post',
         title: 'A New Post',
-        author: 'John Doe',
-      },
+        author: 'John Doe'
+      }
     ];
     await writeData(postsMeta, { dir: '/' });
 
-    const result = fs.readFileSync('/public/posts.json', 'utf-8');
+    const result = fs.readFileSync('/public/feed.json', 'utf-8');
     const stringified = JSON.stringify(postsMeta, null, 4);
 
     expect(result).toEqual(stringified);

@@ -9,20 +9,15 @@ import exportPathMap from 'exportPathMap';
 import rewrites from 'rewrites';
 
 export default (pluginOptions: WithMDXExtendedOptions) => (
-  nextConfig: NextConfig = {},
+  nextConfig: NextConfig = {}
 ): NextConfig => {
   const test = /\.mdx?$/;
-  const {
-    blogDir,
-    enableRewrites = true,
-    exportData,
-    format,
-    ...loaderOptions
-  } = pluginOptions || {};
+  const { blogDir, enableRewrites = true, feed, format, ...loaderOptions } =
+    pluginOptions || {};
   const mdxLoaderOptions = Object.assign(
     {},
     { extensions: nextConfig.pageExtensions, layoutsDir: 'layouts' },
-    loaderOptions,
+    loaderOptions
   );
 
   return Object.assign(
@@ -32,12 +27,12 @@ export default (pluginOptions: WithMDXExtendedOptions) => (
       // exports path map only when executing `next export`
       exportPathMap: async (
         defaultPathMap: PathMap,
-        directories: PathMapDirectories,
+        directories: PathMapDirectories
       ) =>
         exportPathMap(defaultPathMap, directories, {
           blogDir,
-          exportData: !enableRewrites && exportData, // focus on the export in the rewrites, instead of the export path map step
-          format,
+          feed: (!enableRewrites && feed) || null, // focus on the export in the rewrites, instead of the export path map step
+          format
         }),
       webpack(config: Configuration, options: NextOptions) {
         const { module: { rules = [] } = {} } = config || {};
@@ -47,9 +42,9 @@ export default (pluginOptions: WithMDXExtendedOptions) => (
             options.defaultLoaders.babel,
             {
               loader: '@saschazar/mdx-extended-loader',
-              options: mdxLoaderOptions,
-            },
-          ],
+              options: mdxLoaderOptions
+            }
+          ]
         });
 
         if (typeof nextConfig.webpack === 'function') {
@@ -57,7 +52,7 @@ export default (pluginOptions: WithMDXExtendedOptions) => (
         }
 
         return config;
-      },
+      }
     },
     enableRewrites && {
       target: nextConfig.target || 'server', // 'server' is preferred, because it allows `next export`
@@ -68,8 +63,8 @@ export default (pluginOptions: WithMDXExtendedOptions) => (
           const {
             experimental: {
               rewrites: customRewrites = (): Promise<RewriteRule[]> =>
-                Promise.resolve([]),
-            } = {},
+                Promise.resolve([])
+            } = {}
           } = nextConfig;
 
           // check whether custom rewrites are a function after all
@@ -80,21 +75,21 @@ export default (pluginOptions: WithMDXExtendedOptions) => (
           try {
             const parsedRewrites = await rewrites({
               blogDir,
-              exportData,
-              format,
+              feed,
+              format
             });
 
             // merge the custom rewrites with the generated rewrite rules array
             return parsedRewrites.concat(
-              hasRewrites ? await customRewrites() : [],
+              hasRewrites ? await customRewrites() : []
             );
           } catch (e) {
             // if the operation fails, return an empty array
             console.error(e.message || e);
             return [];
           }
-        },
-      },
-    },
+        }
+      }
+    }
   );
 };

@@ -13,7 +13,10 @@ const external = [
   'fs-extra',
   'gray-matter',
   'globby',
-  'param-case'
+  'param-case',
+  'remark',
+  'remark-mdx',
+  'remark-mdx-to-plain-text'
 ];
 
 const globals = {};

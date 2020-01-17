@@ -67,6 +67,9 @@
     "@saschazar/mdx-extended-loader": "^1.0.4",
     "fs-extra": "^8.1.0",
     "globby": "^10.0.1",
-    "param-case": "^3.0.3"
+    "param-case": "^3.0.3",
+    "remark": "^11.0.2",
+    "remark-mdx": "^1.5.5",
+    "remark-mdx-to-plain-text": "^3.0.0"
   }
 }

@@ -1,16 +1,18 @@
 import { basename, extname, join, resolve } from 'path';
-import { readFile } from 'fs-extra';
+import { readFile, readJson } from 'fs-extra';
 import matter from 'gray-matter';
 import parse from '@saschazar/mdx-extended-loader/parser';
 
 import {
   PathMap,
   PathMapDirectories,
-  PathMapOptions,
+  PathMapOptions
 } from 'interfaces/pathMap';
 import glob from 'helpers/glob';
+import mapFeedItemData from 'helpers/mapFeedItemData';
 import parseFormat from 'helpers/parseFormat';
 import writeData from 'helpers/writeData';
+import { JsonFeedItem } from 'interfaces/jsonfeed';
 
 /**
  * Parses the file URL for date and title
@@ -18,7 +20,7 @@ import writeData from 'helpers/writeData';
  * @param url - The URL to parse for date and title
  */
 function parseDateAndTitle(
-  url: string,
+  url: string
 ): { date: string; title: string } | null {
   try {
     return parse(url);
@@ -38,36 +40,35 @@ function parseDateAndTitle(
 export default async function exportPathMap(
   defaultPathMap: PathMap,
   directories: PathMapDirectories,
-  options: PathMapOptions = {},
+  options: PathMapOptions = {}
 ): Promise<PathMap> {
   const { dir } = directories; // get the CWD
-  const {
-    blogDir = 'blog',
-    exportData,
-    format = '/blog/YYYY/[title]',
-  } = options; // set default values to the options
+  const { blogDir = 'blog', feed, format = '/blog/YYYY/[title]' } = options; // set default values to the options
   const blogDirPath = join(dir, 'pages', blogDir); // get the URL of the blog post directory
 
   // rewrite blog post routes according to given format and store it into own object
   /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-  const postsMeta: { [key: string]: any }[] = [];
+  const items: JsonFeedItem[] = [];
   const posts = await glob(blogDirPath);
   const postsPathMap = await posts.reduce(
     async (
       processedPaths: Promise<PathMap>,
-      post: string,
+      post: string
     ): Promise<PathMap> => {
       let url = join('/', blogDir, basename(post, extname(post)));
       try {
         const parsedFilename = parseDateAndTitle(basename(post)); // attempt to parse date and title from the filename
         const postContents = await readFile(
           resolve(blogDirPath, post),
-          'utf-8',
+          'utf-8'
         ); // read the file contents
-        const { data } = matter(postContents); // parse the frontmatter
+        const { content, data } = matter(postContents); // parse the frontmatter
         const meta = Object.assign({}, parsedFilename, data);
         url = parseFormat(format, meta); // replace the placeholders in the format with the actual values
-        postsMeta.push(Object.assign({}, meta, { url: join('/', url) }));
+        const postMeta = Object.assign({}, meta, { url: join('/', url) });
+        items.push(
+          await mapFeedItemData(Object.assign({}, postMeta, { content }))
+        );
       } catch (e) {
         console.error(post, ':\n', e.message || e);
       }
@@ -75,11 +76,11 @@ export default async function exportPathMap(
       // add the rewritten path to the PathMap
       return Object.assign({}, await processedPaths, {
         [join('/', url)]: {
-          page: join('/', blogDir, basename(post, extname(post))),
-        },
+          page: join('/', blogDir, basename(post, extname(post)))
+        }
       });
     },
-    Promise.resolve({} as PathMap),
+    Promise.resolve({} as PathMap)
   );
 
   // filter out the previously rewritten blog post routes
@@ -87,15 +88,43 @@ export default async function exportPathMap(
     (processed: PathMap, current: string): PathMap => {
       if (!current.includes(join('/', blogDir))) {
         return Object.assign({}, processed, {
-          [current]: defaultPathMap[current],
+          [current]: defaultPathMap[current]
         });
       }
       return processed;
     },
-    {} as PathMap,
+    {} as PathMap
   );
 
-  exportData && (await writeData(postsMeta, directories));
+  // populate feed with default values, then merge with custom data and store in public folder
+  if (feed && typeof feed === 'object') {
+    let feedData = Object.assign(
+      {},
+      { version: 'https://jsonfeed.org/version/1' },
+      feed
+    );
+    try {
+      const pkg = await readJson(join(dir, 'package.json'));
+      feedData = Object.assign(
+        {},
+        {
+          title: pkg.name,
+          // eslint-disable-next-line @typescript-eslint/camelcase
+          home_page_url: pkg.homepage || pkg.repository,
+          description: pkg.description,
+          author: pkg.author
+        },
+        feedData
+      );
+    } catch (e) {
+      console.warn(
+        `Warning: could not populate JSON feed with package.json data:\n${e.message ||
+          e}`
+      );
+    } finally {
+      await writeData(Object.assign({}, feedData, { items }), directories);
+    }
+  }
 
   // merge the rewritten blog post routes with the filtered non-blog routes and return
   return Object.assign({}, legacyPathMap, postsPathMap);
