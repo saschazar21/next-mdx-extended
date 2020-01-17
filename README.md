@@ -80,13 +80,15 @@ For customization or enhancement of the above parameters, check the [options](#o
 
 The following options are all optional, and most of them are having default values set:
 
-### `exportData`
+### `feed`
 
-> `boolean` | optional | default: `false`
+> `object` | optional | default: `null`
 
-Whether to export a `posts.json` file containing metadata about the blog posts to `./public` (e.g. for fetching data about blog posts via the `async getInitialProps()` hook). Unset by default (and therefore not exported).
+Whether to export a `feed.json` file containing a [JSON Feed](https://jsonfeed.org/version/1) about the blog posts to `./public` (e.g. for providing a JSON Feed, or fetching data about blog posts via the `async getInitialProps()` hook). Unset by default (and therefore not exported).
 
-⚠️ **TL/DR**: Whenever activated, it creates a `posts.json` file in your `./public` folder, which might cause unwanted side-effects in your git setup!
+If provided, the object may contain values to every [top-level JSON Feed key](https://jsonfeed.org/version/1#top-level), whereas the `items` property is auto-generated. Some omitted values are automatically taken from the `package.json` (like `title`, `description`, `homepage`, etc...).
+
+⚠️ **TL/DR**: Whenever activated, it creates a `feed.json` file in your `./public` folder, which might cause unwanted side-effects in your git setup!
 
 ### `blogDir`
 
