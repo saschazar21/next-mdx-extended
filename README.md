@@ -12,13 +12,13 @@ This project was heavily influenced by [@next/mdx](https://github.com/zeit/next.
 
 The underlying standalone [Webpack](https://webpack.js.org/) loader may be found here: [@saschazar/mdx-extended-loader](https://github.com/saschazar21/mdx-extended-loader).
 
-| **Features**                | `@saschazar/next-mdx-extended` | [`@next/mdx`](https://github.com/zeit/next.js/tree/canary/packages/next-mdx) |
-| --------------------------- | ------------------------------ | ---------------------------------------------------------------------------- |
-| `.md` files                 | ✔️                             | ✔️                                                                           |
-| `.mdx` files                | ✔️                             | ✔️                                                                           |
-| custom layouts              | ✔️                             | ✖️                                                                           |
-| URL rewriting               | ✔️                             | ✖️                                                                           |
-| extracting metadata to JSON | ✔️                             | ✖️                                                                           |
+| **Features**           | `@saschazar/next-mdx-extended` | [`@next/mdx`](https://github.com/zeit/next.js/tree/canary/packages/next-mdx) |
+| ---------------------- | ------------------------------ | ---------------------------------------------------------------------------- |
+| `.md` files            | ✔️                             | ✔️                                                                           |
+| `.mdx` files           | ✔️                             | ✔️                                                                           |
+| custom layouts         | ✔️                             | ✖️                                                                           |
+| URL rewriting          | ✔️                             | ✖️                                                                           |
+| generating a JSON Feed | ✔️                             | ✖️                                                                           |
 
 Given the following project tree:
 
@@ -84,9 +84,9 @@ The following options are all optional, and most of them are having default valu
 
 > `object` | optional | default: `null`
 
-Whether to export a `feed.json` file containing a [JSON Feed](https://jsonfeed.org/version/1) about the blog posts to `./public` (e.g. for providing a JSON Feed, or fetching data about blog posts via the `async getInitialProps()` hook). Unset by default (and therefore not exported).
+Whether to export a `feed.json` file containing a [JSON Feed](https://jsonfeed.org/version/1) about the blog posts to `./public` (e.g. for providing a feed in general, or fetching data about blog posts via the `async getInitialProps()` hook). Unset by default (and therefore not exported).
 
-If provided, the object may contain values to every [top-level JSON Feed key](https://jsonfeed.org/version/1#top-level), whereas the `items` property is auto-generated. Some omitted values are automatically taken from the `package.json` (like `title`, `description`, `homepage`, etc...).
+If provided, the object may contain values to every [top-level JSON Feed key](https://jsonfeed.org/version/1#top-level), whereas the `items` property is auto-generated. If some values are omitted, they automatically taken from the `package.json` (like `title`, `description`, `homepage`, etc...).
 
 ⚠️ **TL/DR**: Whenever activated, it creates a `feed.json` file in your `./public` folder, which might cause unwanted side-effects in your git setup!
 
