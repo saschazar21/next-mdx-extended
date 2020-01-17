@@ -1,3 +1,4 @@
+/// <reference path="global.d.ts" />
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
@@ -16,6 +17,6 @@
     "strict": true,
     "target": "ESNext"
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "global.d.ts"],
   "exclude": ["node_modules", "test/**/*"]
 }

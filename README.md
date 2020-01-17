@@ -4,7 +4,7 @@
 
 > Easily wrap MDX pages in React components for Next.js
 
-A [Next.js](https://nextjs.org) plugin for wrapping **Markdown/MDX** files in **React** components, with URL rewriting options.
+A [Next.js](https://nextjs.org) plugin for wrapping **Markdown/MDX** files in **React** components, with URL rewriting options. Now supporting _serverless_ [Next.js rewrites](https://github.com/zeit/next.js/issues/9081#issuecomment-556010060).
 
 ## Features
 
@@ -12,13 +12,13 @@ This project was heavily influenced by [@next/mdx](https://github.com/zeit/next.
 
 The underlying standalone [Webpack](https://webpack.js.org/) loader may be found here: [@saschazar/mdx-extended-loader](https://github.com/saschazar21/mdx-extended-loader).
 
-| **Features**                | `@saschazar/next-mdx-extended` | [`@next/mdx`](https://github.com/zeit/next.js/tree/canary/packages/next-mdx) |
-| --------------------------- | ------------------------------ | ---------------------------------------------------------------------------- |
-| `.md` files                 | ✔️                             | ✔️                                                                           |
-| `.mdx` files                | ✔️                             | ✔️                                                                           |
-| custom layouts              | ✔️                             | ✖️                                                                           |
-| URL rewriting               | ✔️ (only using `next export`)  | ✖️                                                                           |
-| extracting metadata to JSON | ✔️ (only using `next export`)  | ✖️                                                                           |
+| **Features**           | `@saschazar/next-mdx-extended` | [`@next/mdx`](https://github.com/zeit/next.js/tree/canary/packages/next-mdx) |
+| ---------------------- | ------------------------------ | ---------------------------------------------------------------------------- |
+| `.md` files            | ✔️                             | ✔️                                                                           |
+| `.mdx` files           | ✔️                             | ✔️                                                                           |
+| custom layouts         | ✔️                             | ✖️                                                                           |
+| URL rewriting          | ✔️                             | ✖️                                                                           |
+| generating a JSON Feed | ✔️                             | ✖️                                                                           |
 
 Given the following project tree:
 
@@ -46,8 +46,6 @@ Without any custom [options](#options), both `.mdx` files would be wrapped in `l
       ├ first-blog-post.html
 ```
 
-⚠️ **CAUTION**: The URL rewriting functionality of this plugin only has an effect, when the project is exported via `next export`. More information in the [Next.js docs](https://nextjs.org/docs/api-reference/next.config.js/exportPathMap). Same goes for the [`exportData`](#exportdata) option.
-
 ## Installation
 
 `yarn add @saschazar/next-mdx-extended`
@@ -67,7 +65,7 @@ Create a `next.config.js` file in your project root:
 const withMDXExtended = require('@saschazar/next-mdx-extended')();
 
 module.exports = withMDXExtended({
-  pageExtensions: ['mdx', 'md']
+  pageExtensions: ['jsx', 'js', 'mdx', 'md']
 });
 ```
 
@@ -82,13 +80,15 @@ For customization or enhancement of the above parameters, check the [options](#o
 
 The following options are all optional, and most of them are having default values set:
 
-### `exportData`
+### `feed`
 
-> `boolean` | optional | default: `false`
+> `object` | optional | default: `null`
 
-Whether to export a `posts.json` file containing metadata about the blog posts to `./public` (e.g. for fetching data about blog posts via the `async getInitialProps()` hook). Unset by default (and therefore not exported).
+Whether to export a `feed.json` file containing a [JSON Feed](https://jsonfeed.org/version/1) about the blog posts to `./public` (e.g. for providing a feed in general, or fetching data about blog posts via the `async getInitialProps()` hook). Unset by default (and therefore not exported).
 
-⚠️ **TL/DR**: Whenever activated, it creates a `posts.json` file in your `./public` folder, which might cause unwanted side-effects in your git setup!
+If provided, the object may contain values to every [top-level JSON Feed key](https://jsonfeed.org/version/1#top-level), whereas the `items` property is auto-generated. If some values are omitted, they automatically taken from the `package.json` (like `title`, `description`, `homepage`, etc...).
+
+⚠️ **TL/DR**: Whenever activated, it creates a `feed.json` file in your `./public` folder, which might cause unwanted side-effects in your git setup!
 
 ### `blogDir`
 

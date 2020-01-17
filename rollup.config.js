@@ -1,6 +1,6 @@
 import babel from 'rollup-plugin-babel';
 import builtinModules from 'builtin-modules';
-import commonjs from 'rollup-plugin-commonjs';
+import commonjs from '@rollup/plugin-commonjs';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import { terser } from 'rollup-plugin-terser';
 import typescript from 'rollup-plugin-typescript2';
@@ -14,6 +14,9 @@ const external = [
   'gray-matter',
   'globby',
   'param-case',
+  'remark',
+  'remark-mdx',
+  'remark-mdx-to-plain-text'
 ];
 
 const globals = {};
@@ -25,15 +28,15 @@ const config = {
     nodeResolve(),
     commonjs({
       exclude: /node_modules/,
-      sourceMap: false,
+      sourceMap: false
     }),
     typescript({
       useTsconfigDeclarationDir: true,
       cacheRoot: '.cache',
-      transformers: [service => typescriptRelativePaths(service.getProgram())],
+      transformers: [service => typescriptRelativePaths(service.getProgram())]
     }),
-    babel({ extensions: ['.ts'] }),
-  ],
+    babel({ extensions: ['.ts'] })
+  ]
 };
 
 export default [
@@ -43,9 +46,9 @@ export default [
       {
         file: 'index.js',
         format: 'cjs',
-        globals,
-      },
-    ],
+        globals
+      }
+    ]
   },
   {
     ...config,
@@ -54,8 +57,8 @@ export default [
       {
         file: 'index.min.js',
         format: 'cjs',
-        globals,
-      },
-    ],
-  },
+        globals
+      }
+    ]
+  }
 ];
