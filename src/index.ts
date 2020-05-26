@@ -32,7 +32,7 @@ export default (pluginOptions: WithMDXExtendedOptions) => (
         exportPathMap(defaultPathMap, directories, {
           blogDir,
           feed: (!enableRewrites && feed) || null, // focus on the export in the rewrites, instead of the export path map step
-          format
+          format,
         }),
       webpack(config: Configuration, options: NextOptions) {
         const { module: { rules = [] } = {} } = config || {};
@@ -42,9 +42,9 @@ export default (pluginOptions: WithMDXExtendedOptions) => (
             options.defaultLoaders.babel,
             {
               loader: '@saschazar/mdx-extended-loader',
-              options: mdxLoaderOptions
-            }
-          ]
+              options: mdxLoaderOptions,
+            },
+          ],
         });
 
         if (typeof nextConfig.webpack === 'function') {
@@ -52,19 +52,18 @@ export default (pluginOptions: WithMDXExtendedOptions) => (
         }
 
         return config;
-      }
+      },
     },
     enableRewrites && {
       target: nextConfig.target || 'server', // 'server' is preferred, because it allows `next export`
       experimental: {
-        modern: true,
-        rewrites: async (): Promise<RewriteRule[]> => {
+        async rewrites(): Promise<RewriteRule[]> {
           // get any custom rewrite rules from the user's settings in next.config.js
           const {
             experimental: {
               rewrites: customRewrites = (): Promise<RewriteRule[]> =>
-                Promise.resolve([])
-            } = {}
+                Promise.resolve([]),
+            } = {},
           } = nextConfig;
 
           // check whether custom rewrites are a function after all
@@ -76,7 +75,7 @@ export default (pluginOptions: WithMDXExtendedOptions) => (
             const parsedRewrites = await rewrites({
               blogDir,
               feed,
-              format
+              format,
             });
 
             // merge the custom rewrites with the generated rewrite rules array
@@ -88,8 +87,8 @@ export default (pluginOptions: WithMDXExtendedOptions) => (
             console.error(e.message || e);
             return [];
           }
-        }
-      }
+        },
+      },
     }
   );
 };
