@@ -56,6 +56,10 @@ or
 
 (Of course, a working [Next.js](https://nextjs.org) environment is advised to be set up beforehand.)
 
+### Compatibility
+
+**⚠️ Caution**: Users of `next@~9.3.0` and below will have to continue using `@saschazar/next-mdx-extended@^2.0.0` due to compatibility issues of experimental rewrites in Next v9.4!
+
 ## Usage
 
 Create a `next.config.js` file in your project root:
@@ -65,7 +69,7 @@ Create a `next.config.js` file in your project root:
 const withMDXExtended = require('@saschazar/next-mdx-extended')();
 
 module.exports = withMDXExtended({
-  pageExtensions: ['jsx', 'js', 'mdx', 'md']
+  pageExtensions: ['jsx', 'js', 'mdx', 'md'],
 });
 ```
 

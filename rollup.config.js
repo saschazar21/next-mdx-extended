@@ -16,7 +16,7 @@ const external = [
   'param-case',
   'remark',
   'remark-mdx',
-  'remark-mdx-to-plain-text'
+  'remark-mdx-to-plain-text',
 ];
 
 const globals = {};
@@ -28,15 +28,15 @@ const config = {
     nodeResolve(),
     commonjs({
       exclude: /node_modules/,
-      sourceMap: false
+      sourceMap: false,
     }),
     typescript({
       useTsconfigDeclarationDir: true,
       cacheRoot: '.cache',
-      transformers: [service => typescriptRelativePaths(service.getProgram())]
+      transformers: [service => typescriptRelativePaths(service.getProgram())],
     }),
-    babel({ extensions: ['.ts'] })
-  ]
+    babel({ extensions: ['.ts'] }),
+  ],
 };
 
 export default [
@@ -46,9 +46,9 @@ export default [
       {
         file: 'index.js',
         format: 'cjs',
-        globals
-      }
-    ]
+        globals,
+      },
+    ],
   },
   {
     ...config,
@@ -57,8 +57,8 @@ export default [
       {
         file: 'index.min.js',
         format: 'cjs',
-        globals
-      }
-    ]
-  }
+        globals,
+      },
+    ],
+  },
 ];

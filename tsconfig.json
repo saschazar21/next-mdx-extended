@@ -12,6 +12,7 @@
     "paths": {
       "*": ["src/*", "test/*"]
     },
+    "plugins": [{ "transform": "@zerollup/ts-transform-paths" }],
     "removeComments": true,
     "sourceMap": false,
     "strict": true,
