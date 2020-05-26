@@ -1,3 +1,15 @@
+# [3.0.0](https://github.com/saschazar21/next-mdx-extended/compare/v2.0.0...v3.0.0) (2020-05-26)
+
+
+### Features
+
+* update to Next v9.4 ([88b8530](https://github.com/saschazar21/next-mdx-extended/commit/88b85309c2b24b4b0e9703e71442fc144ec42988))
+
+
+### BREAKING CHANGES
+
+* This solves compatibility issues with experimental rewrites in next.config.js
+
 # [2.0.0](https://github.com/saschazar21/next-mdx-extended/compare/v1.1.0...v2.0.0) (2020-01-17)
 
 
