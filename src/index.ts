@@ -56,38 +56,36 @@ export default (pluginOptions: WithMDXExtendedOptions) => (
     },
     enableRewrites && {
       target: nextConfig.target || 'server', // 'server' is preferred, because it allows `next export`
-      experimental: {
-        async rewrites(): Promise<RewriteRule[]> {
-          // get any custom rewrite rules from the user's settings in next.config.js
-          const {
-            experimental: {
-              rewrites: customRewrites = (): Promise<RewriteRule[]> =>
-                Promise.resolve([]),
-            } = {},
-          } = nextConfig;
+      async rewrites(): Promise<RewriteRule[]> {
+        // get any custom rewrite rules from the user's settings in next.config.js
+        const {
+          experimental: {
+            rewrites: customRewrites = (): Promise<RewriteRule[]> =>
+              Promise.resolve([]),
+          } = {},
+        } = nextConfig;
 
-          // check whether custom rewrites are a function after all
-          const hasRewrites =
-            customRewrites && typeof customRewrites === 'function';
+        // check whether custom rewrites are a function after all
+        const hasRewrites =
+          customRewrites && typeof customRewrites === 'function';
 
-          // generate the rewrite rules based on the exportPathMap settings
-          try {
-            const parsedRewrites = await rewrites({
-              blogDir,
-              feed,
-              format,
-            });
+        // generate the rewrite rules based on the exportPathMap settings
+        try {
+          const parsedRewrites = await rewrites({
+            blogDir,
+            feed,
+            format,
+          });
 
-            // merge the custom rewrites with the generated rewrite rules array
-            return parsedRewrites.concat(
-              hasRewrites ? await customRewrites() : []
-            );
-          } catch (e) {
-            // if the operation fails, return an empty array
-            console.error(e.message || e);
-            return [];
-          }
-        },
+          // merge the custom rewrites with the generated rewrite rules array
+          return parsedRewrites.concat(
+            hasRewrites ? await customRewrites() : []
+          );
+        } catch (e) {
+          // if the operation fails, return an empty array
+          console.error(e.message || e);
+          return [];
+        }
       },
     }
   );

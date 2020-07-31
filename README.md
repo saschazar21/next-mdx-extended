@@ -58,7 +58,13 @@ or
 
 ### Compatibility
 
-**⚠️ Caution**: Users of `next@~9.3.0` and below will have to continue using `@saschazar/next-mdx-extended@^2.0.0` due to compatibility issues of experimental rewrites in Next v9.4!
+#### Next v9.5
+
+**⚠️ Caution**: [Rewrites](https://nextjs.org/docs/api-reference/next.config.js/rewrites) are out of `experimental` since `next@~9.5.0`. Therefore a major release to `v4.0.0` became necessary for ensuring compatibility to `next.config.js`.
+
+#### Next v9.4
+
+**⚠️ Caution**: `next@~9.4.0` changed the way of how `rewrites` work inside the `experimental` property of `next.config.js`. Therefore a major release bump to `@saschazar/next-mdx-extended@^3.0.0` became necessary.
 
 ## Usage
 
