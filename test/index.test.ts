@@ -14,16 +14,16 @@ const feed = {
   version: 'https://jsonfeed.org/version/1',
   title: 'Unit tests for next-mdx-extended',
   // eslint-disable-next-line @typescript-eslint/camelcase
-  home_page_url: 'https://github.com/saschazar21/next-mdx-extended'
+  home_page_url: 'https://github.com/saschazar21/next-mdx-extended',
 };
 
 const nextConfig: NextConfig = {
-  pageExtensions: ['mdx', 'md', 'tsx', 'ts']
+  pageExtensions: ['mdx', 'md', 'tsx', 'ts'],
 };
 
 const options: MDXExtendedLoaderOptions = {
   extensions: nextConfig.pageExtensions,
-  layoutsDir: 'layouts'
+  layoutsDir: 'layouts',
 };
 
 const withMDXExtended = mdxExtended(options);
@@ -35,7 +35,7 @@ describe('next-mdx-extended', () => {
       './blog/2019-12-28_a-post.mdx':
         '---\nlayout: custom\nauthor: Sascha Zarhuber\nkeywords:\n  blog\n  post\n---\n\n A blog post',
       './blog/2019-12-29_a-new-post.mdx':
-        '---\nlayout: custom\nauthor: Sascha Zarhuber\nkeywords:\n  blog\n  post\n---\n\n A new blog post'
+        '---\nlayout: custom\nauthor: Sascha Zarhuber\nkeywords:\n  blog\n  post\n---\n\n A new blog post',
     };
 
     vol.fromJSON(files, '/pages');
@@ -73,9 +73,9 @@ describe('next-mdx-extended', () => {
   });
 
   it('enables rewrites by default', async () => {
-    expect(config).toHaveProperty('experimental');
+    expect(config).toHaveProperty('rewrites');
 
-    const rewrites = await config.experimental.rewrites();
+    const rewrites = await config.rewrites();
 
     expect(rewrites).toHaveLength(2);
     expect(rewrites[0]).toHaveProperty('source', '/blog/2019/a-post');
@@ -94,7 +94,7 @@ describe('next-mdx-extended', () => {
       "ENOENT: no such file or directory, open '/public/feed.json'"
     );
 
-    await config.experimental.rewrites();
+    await config.rewrites();
 
     const postsMeta = JSON.parse(
       fs.readFileSync(postsMetaUrl, 'utf-8') as string
@@ -111,7 +111,7 @@ describe('next-mdx-extended', () => {
     const withMDXExtended = mdxExtended({
       ...options,
       enableRewrites: false,
-      feed
+      feed,
     });
     const config = withMDXExtended(nextConfig);
 
