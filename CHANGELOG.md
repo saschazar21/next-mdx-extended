@@ -1,3 +1,15 @@
+# [4.0.0](https://github.com/saschazar21/next-mdx-extended/compare/v3.0.0...v4.0.0) (2020-07-31)
+
+
+### Bug Fixes
+
+* moved rewrites out of experimental property ([#9](https://github.com/saschazar21/next-mdx-extended/issues/9)) ([bcb68e8](https://github.com/saschazar21/next-mdx-extended/commit/bcb68e814323824f90fbc89428b114659308c48a))
+
+
+### BREAKING CHANGES
+
+* Next v9.5 is now required as peer dependency, as config does not contain any backwards compatible experimental section anymore.
+
 # [3.0.0](https://github.com/saschazar21/next-mdx-extended/compare/v2.0.0...v3.0.0) (2020-05-26)
 
 
