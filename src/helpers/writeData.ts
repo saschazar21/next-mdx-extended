@@ -19,7 +19,12 @@ export default function writeData(
 
   const publicDir = resolve(dir, 'public');
 
-  return ensureDir(publicDir).then(() =>
-    writeJson(resolve(publicDir, 'feed.json'), feed, { spaces: 4 })
+  return (
+    /* TODO: JSFIX could not patch the breaking change:
+    Creating a directory with fs-extra no longer returns the path 
+    Suggested fix: The returned promise no longer includes the path of the new directory */
+    ensureDir(publicDir).then(() =>
+      writeJson(resolve(publicDir, 'feed.json'), feed, { spaces: 4 })
+    )
   );
 }
